@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGrp": {
+	"type": "array",
+        "metadata": {
+            "description": "Action Group Definition. Format: Name, Status, smsReceiversName, smsReceiversCountryCode, smsReceiversPhoneNumber, emailReceiversName, emailReceiversEmailAddress, webhookReceiversName, webhookReceiversServiceUri"
+          }
+        }
+    },
+"resources":[ {
+    "type": "Microsoft.Insights/actionGroups",
+    "apiVersion": "2018-03-01",
+    "name": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].name]",
+    "location": "Global",
+    "properties": {
+      "groupShortName": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].shortname]",
+      "enabled": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].status]",
+      "copy": [{
+	      	"name": "smsReceivers",
+      		"count": "[length(parameters('actionGrp')[copyIndex('actionGrpCopy')].smsReceivers)]",
+		"input": {
+	          "name": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].smsReceivers[copyIndex('smsReceivers')].smsReceiversName]",
+	          "countryCode": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].smsReceivers[copyIndex('smsReceivers')].smsReceiversCountryCode]",
+	          "phoneNumber": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].smsReceivers[copyIndex('smsReceivers')].smsReceiversPhoneNumber]",
+	          "useCommonAlertSchema": "true"
+	       }
+      }],
+
+      "emailReceivers": [
+        {
+          "name": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].emailReceiversName]",
+          "emailAddress": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].emailReceiversEmailAddress]",
+          "useCommonAlertSchema": "true"
+        }
+      ],
+      "webhookReceivers": [
+        {
+          "name": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].webhookReceiversName]",
+          "serviceUri": "[parameters('actionGrp')[copyIndex('actionGrpCopy')].webhookReceiversServiceUri]",
+          "useCommonAlertSchema": "true"
+        }
+      ]
+     },
+    "copy": {
+      "name": "actionGrpCopy",
+      "count": "[length(parameters('actionGrp'))]"
+    }
+  }
+ ]
+}

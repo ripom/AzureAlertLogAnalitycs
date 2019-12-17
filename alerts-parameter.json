@@ -1,0 +1,26 @@
+{
+   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+	"alerts": {
+		"value": [
+		{
+		        "alertLocation" : "westeurope",
+		        "alertName": "contoso-alert",
+        		"alertDescription": "Contoso log search alert",
+        		"alertStatus": "true",
+        		"alertSourceQuery": "requests",
+        		"alertSourceSourceId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourcegroups/resourcegroupname/providers/microsoft.operationalinsights/workspaces/loganalyticsname",
+        		"alertScheduleFrequency": 5,
+        		"alertScheduleTime": 5,
+        		"alertActionsSeverityLevel": 4,
+        		"alertTriggerOperator": "GreaterThan",
+        		"alertTriggerThreshold": 0,
+        		"actionGrpName": "name-ag",
+        		"actionGrpSubject": "Keyvault change alert",
+        		"actionGrpWebhook": "{ \"alertname\":\"#alertrulename\", \"IncludeSearchResults\":true }"
+		}
+    	   ]
+	}
+    }
+}

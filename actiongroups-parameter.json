@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGrp": {
+            "value": [{ 
+                    "name": "name-ag",
+		    "shortname": "nameag",
+                    "status": "true",
+		    "smsReceivers": [
+			{
+	                    "smsReceiversName": "Riccardo Pomato",
+        	            "smsReceiversCountryCode": "44",
+                	    "smsReceiversPhoneNumber": "0123456789"
+			}
+		    ],
+                    "emailReceiversName": "Riccardo-email",
+                    "emailReceiversEmailAddress": "riccardopomato@contoso.com",
+                    "webhookReceiversName": "Slack-hook",
+                    "webhookReceiversServiceUri": "https://slack.contoso.com/alert"
+            }
+           ]
+        }
+    }
+}

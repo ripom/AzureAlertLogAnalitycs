@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alerts" : {
+            "type": "array",
+            "metadata": {
+            "description": "Alert array definition."
+          }
+        }
+    },
+    "variables": {
+    },
+    "resources":[ {
+        "name":"[parameters('alerts')[copyIndex('AlertsCopy')].alertName]",
+        "type":"Microsoft.Insights/scheduledQueryRules",
+        "apiVersion": "2018-04-16",
+        "location": "[parameters('alerts')[copyIndex('AlertsCopy')].alertLocation]",
+        "properties":{
+            "description": "[parameters('alerts')[copyIndex('AlertsCopy')].alertDescription]",
+            "enabled": "[parameters('alerts')[copyIndex('AlertsCopy')].alertStatus]",
+            "source": {
+                "query": "[parameters('alerts')[copyIndex('AlertsCopy')].alertSourceQuery]",
+                "dataSourceId": "[parameters('alerts')[copyIndex('AlertsCopy')].alertSourceSourceId]",
+                "queryType":"ResultCount"
+            },
+            "schedule":{
+                "frequencyInMinutes": "[parameters('alerts')[copyIndex('AlertsCopy')].alertScheduleFrequency]",
+                "timeWindowInMinutes": "[parameters('alerts')[copyIndex('AlertsCopy')].alertScheduleTime]"
+            },
+            "action":{
+                "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+                "severity":"[parameters('alerts')[copyIndex('AlertsCopy')].alertActionsSeverityLevel]",
+                "aznsAction":{
+                    "actionGroup":["[resourceId('Microsoft.Insights/actionGroups', parameters('alerts')[copyIndex('AlertsCopy')].actionGrpName)]"],
+                    "emailSubject":"[parameters('alerts')[copyIndex('AlertsCopy')].actionGrpSubject]",
+                    "customWebhookPayload":"[if(not(empty(parameters('alerts')[copyIndex('AlertsCopy')].actionGrpWebhook)), parameters('alerts')[copyIndex('AlertsCopy')].actionGrpWebhook, json('null'))]"
+                },
+                "trigger":{
+                    "thresholdOperator":"[parameters('alerts')[copyIndex('AlertsCopy')].alertTriggerOperator]",
+                    "threshold":"[parameters('alerts')[copyIndex('AlertsCopy')].alertTriggerThreshold]"
+                }
+            }
+        },
+    	"copy": {
+	      "name": "AlertsCopy",
+	      "count": "[length(parameters('alerts'))]"
+	}
+    } ]
+}
