@@ -9,17 +9,25 @@
                     "status": "true",
 		    "smsReceivers": [
 			{
-	                    "smsReceiversName": "Riccardo Pomato",
-        	            "smsReceiversCountryCode": "44",
-                	    "smsReceiversPhoneNumber": "0123456789"
+	                    "Name": "Riccardo Pomato",
+        	            "CountryCode": "44",
+                	    "PhoneNumber": "0123456789"
 			}
 		    ],
-                    "emailReceiversName": "Riccardo-email",
-                    "emailReceiversEmailAddress": "riccardopomato@contoso.com",
-                    "webhookReceiversName": "Slack-hook",
-                    "webhookReceiversServiceUri": "https://slack.contoso.com/alert"
-            }
-           ]
+                    "emailReceivers": [
+                        {
+                            "Name": "Riccardo-email",
+                            "EmailAddress": "riccardopomato@contoso.com"
+                        }
+                    ],
+                    "webhookReceivers": [
+                        {
+                            "Name": "Slack-hook",
+                            "ServiceUri": "https://slack.contoso.com/alert"
+                        }
+                    ]
+
+            }]
         }
     }
 }
